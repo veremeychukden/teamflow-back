@@ -13,7 +13,7 @@ const userSchema = new mongoose.Schema(
       default: ROLES.USER,
     },
   },
-  { collection: "users"  }
+  { collection: "users" }
 );
 
 userSchema.pre("save", async function () {

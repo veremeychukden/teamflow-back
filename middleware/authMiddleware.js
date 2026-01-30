@@ -4,9 +4,6 @@ import { ROLES } from "../constants/roles.js";
 
 export const protect = async (req, res, next) => {
   let token;
-  if (req.user.role !== ROLES.ADMIN) {
-    return res.status(403).json({ message: "Forbidden" });
-  }
 
   if (
     req.headers.authorization &&
@@ -23,4 +20,14 @@ export const protect = async (req, res, next) => {
   } else {
     res.status(401).json({ message: "No token" });
   }
+};
+
+export const authorize = (...roles) => {
+  return (req, res, next) => {
+    if (!roles.includes(req.user.role)) {
+      res.status(403);
+      throw new Error("Access denied");
+    }
+    next();
+  };
 };
