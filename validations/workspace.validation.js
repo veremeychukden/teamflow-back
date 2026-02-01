@@ -10,12 +10,12 @@ export const createWorkspaceValidation = [
 ];
 
 export const workspaceIdParamValidation = [
-  param("id")
+  param("workspaceId")
     .isMongoId()
     .withMessage("Invalid workspace id"),
 ];
 
 export const addMemberValidation = [
-  param("id").isMongoId().withMessage("Invalid workspace id"),
+  param("workspaceId").isMongoId().withMessage("Invalid workspace id"),
   body("userId").isMongoId().withMessage("Invalid user id"),
 ];

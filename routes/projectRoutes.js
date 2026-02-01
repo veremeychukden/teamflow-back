@@ -8,8 +8,11 @@ import {
   createProjectValidation,
 } from "../validations/project.validation.js";
 import validate  from "../middleware/validationMiddleware.js";
+import taskRoutes from "./taskRoutes.js";
+import { hasProjectAccess } from "../middleware/projectMiddleware.js";
 
-const router = express.Router();
+const router = express.Router({ mergeParams: true });
+router.use("/:projectId/tasks", protect, hasProjectAccess, taskRoutes);
 
 router.post(
   "/",
@@ -20,7 +23,7 @@ router.post(
 );
 
 router.get(
-  "/workspace/:workspaceId",
+  "/",
   protect,
   getWorkspaceProjects
 );

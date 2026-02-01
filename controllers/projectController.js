@@ -7,7 +7,7 @@ import {
 export const createProject = asyncHandler(async (req, res) => {
   const project = await createProjectService({
     name: req.body.name,
-    workspaceId: req.body.workspaceId,
+    workspaceId: req.params.workspaceId,
     user: req.user,
   });
 
@@ -15,6 +15,9 @@ export const createProject = asyncHandler(async (req, res) => {
 });
 
 export const getWorkspaceProjects = asyncHandler(async (req, res) => {
-  const projects = await getWorkspaceProjectsService(req.params.workspaceId);
+  const projects = await getWorkspaceProjectsService(
+    req.params.workspaceId
+  );
+
   res.json(projects);
 });

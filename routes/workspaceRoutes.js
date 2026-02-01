@@ -18,8 +18,18 @@ import {
   isWorkspaceOwner
 } from "../middleware/workspaceMiddleware.js";
 
-const router = express.Router();
+import projectRoutes from "./projectRoutes.js";
 
+const router = express.Router();
+router.use(
+  "/:workspaceId",
+  protect,
+  workspaceIdParamValidation,
+  validate,
+  hasWorkspaceAccess
+);
+
+router.get("/:workspaceId", getWorkspaceById);
 router.post(
   "/",
   protect,
@@ -28,35 +38,26 @@ router.post(
   createWorkspace
 );
 
-router.get("/", protect, getMyWorkspaces);
-
 router.get(
-  "/:id",
+  "/",
   protect,
-  workspaceIdParamValidation,
-  validate,
-  hasWorkspaceAccess,
-  getWorkspaceById
+  getMyWorkspaces
 );
 
 router.post(
-  "/:id/members",
-  protect,
+  "/:workspaceId/members",
+  isWorkspaceOwner,
   addMemberValidation,
   validate,
-  hasWorkspaceAccess,
-  isWorkspaceOwner,
   addMemberToWorkspace
 );
 
 router.delete(
-  "/:id",
-  protect,
-  workspaceIdParamValidation,
-  validate,
-  hasWorkspaceAccess,
+  "/:workspaceId",
   isWorkspaceOwner,
   deleteWorkspace
 );
+router.use("/:workspaceId/projects", projectRoutes);
+
 
 export default router;
